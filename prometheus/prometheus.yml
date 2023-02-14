@@ -1,6 +1,6 @@
-global:
-  scrape_interval: 10s
-  scrape_timeout: 5s
+global: # especifica parâmetros que são válidos em todos os outros contextos de configuração.
+  scrape_interval: 10s # intervalo de tempo em que será feito o pull
+  scrape_timeout: 5s # tempo limite da requisição ao endpoint http de métricas
 
 rule_files:
   - alert.yml
@@ -11,4 +11,4 @@ scrape_configs:
     static_configs:
       - targets:
           - localhost:9000
-          - 192.168.100.121:9033
+          - 192.168.100.121:8080
