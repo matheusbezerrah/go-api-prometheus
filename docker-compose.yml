@@ -13,6 +13,8 @@ services:
       - ./prometheus:/etc/prometheus
       - prometheus-data:/prometheus
     command: --web.enable-lifecycle  --config.file=/etc/prometheus/prometheus.yml
+    networks:
+      - metrics
   grafana:
     image: grafana/grafana:8.5.5
     container_name: grafana
