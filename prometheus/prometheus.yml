@@ -1,5 +1,5 @@
 global: # especifica parâmetros que são válidos em todos os outros contextos de configuração.
-  scrape_interval: 10s # intervalo de tempo em que será feito o pull
+  scrape_interval: 5s # intervalo de tempo em que será feito o pull
   scrape_timeout: 5s # tempo limite da requisição ao endpoint http de métricas
 
 rule_files:

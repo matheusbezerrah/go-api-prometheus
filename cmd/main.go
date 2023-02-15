@@ -9,6 +9,14 @@ import (
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
+func main() {
+	recordsCounterMetric()
+	recordsGaugeMetric()
+	recordsHistogramMetric()
+	http.Handle("/metrics", promhttp.Handler())
+	http.ListenAndServe(":8080", nil)
+}
+
 var (
 	// COUNTER
 	api_num_request_post = promauto.NewCounter(
@@ -38,6 +46,14 @@ var (
 			Name:    "api_response_time_milliseconds",
 			Help:    "Response time of the api in milliseconds",
 			Buckets: prometheus.ExponentialBuckets(50, 2, 6),
+		},
+	)
+	// SUMMARY
+	api_summary_response_time = promauto.NewSummary(
+		prometheus.SummaryOpts{
+			Name:       "api_summary_response_time_milliseconds",
+			Help:       "Response time of the api in milliseconds",
+			Objectives: map[float64]float64{0.5: 0.05, 0.9: 0.01, 0.99: 0.001},
 		},
 	)
 )
@@ -70,40 +86,69 @@ func recordsGaugeMetric() {
 }
 
 func recordsHistogramMetric() {
+
 	go func() {
 		for {
 			start := time.Now()
 			time.Sleep(45 * time.Millisecond)
 			api_response_time.Observe(float64(time.Since(start).Milliseconds()))
+			api_summary_response_time.Observe(float64(time.Since(start).Milliseconds()))
 		}
 	}()
 	go func() {
 		for {
 			start := time.Now()
-			time.Sleep(400 * time.Millisecond)
+			time.Sleep(150 * time.Millisecond)
 			api_response_time.Observe(float64(time.Since(start).Milliseconds()))
+			api_summary_response_time.Observe(float64(time.Since(start).Milliseconds()))
 		}
 	}()
 	go func() {
 		for {
 			start := time.Now()
-			time.Sleep(700 * time.Millisecond)
+			time.Sleep(210 * time.Millisecond)
 			api_response_time.Observe(float64(time.Since(start).Milliseconds()))
+			api_summary_response_time.Observe(float64(time.Since(start).Milliseconds()))
 		}
 	}()
 	go func() {
 		for {
 			start := time.Now()
-			time.Sleep(2000 * time.Millisecond)
+			time.Sleep(250 * time.Millisecond)
 			api_response_time.Observe(float64(time.Since(start).Milliseconds()))
+			api_summary_response_time.Observe(float64(time.Since(start).Milliseconds()))
 		}
 	}()
-}
-
-func main() {
-	recordsCounterMetric()
-	recordsGaugeMetric()
-	recordsHistogramMetric()
-	http.Handle("/metrics", promhttp.Handler())
-	http.ListenAndServe(":8080", nil)
+	go func() {
+		for {
+			start := time.Now()
+			time.Sleep(300 * time.Millisecond)
+			api_response_time.Observe(float64(time.Since(start).Milliseconds()))
+			api_summary_response_time.Observe(float64(time.Since(start).Milliseconds()))
+		}
+	}()
+	go func() {
+		for {
+			start := time.Now()
+			time.Sleep(370 * time.Millisecond)
+			api_response_time.Observe(float64(time.Since(start).Milliseconds()))
+			api_summary_response_time.Observe(float64(time.Since(start).Milliseconds()))
+		}
+	}()
+	go func() {
+		for {
+			start := time.Now()
+			time.Sleep(405 * time.Millisecond)
+			api_response_time.Observe(float64(time.Since(start).Milliseconds()))
+			api_summary_response_time.Observe(float64(time.Since(start).Milliseconds()))
+		}
+	}()
+	go func() {
+		for {
+			start := time.Now()
+			time.Sleep(748 * time.Millisecond)
+			api_response_time.Observe(float64(time.Since(start).Milliseconds()))
+			api_summary_response_time.Observe(float64(time.Since(start).Milliseconds()))
+		}
+	}()
 }
